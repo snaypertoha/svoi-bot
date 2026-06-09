@@ -60,12 +60,20 @@ app.get('/test-admin', async (req, res) => {
   }
 })
 
-bot.launch()
-
 const PORT = process.env.PORT || 3001
 
-app.listen(PORT, () => {
+app.use(bot.webhookCallback('/telegram-webhook'))
+
+app.listen(PORT, async () => {
   console.log(`Bot and API are running on port ${PORT}`)
+
+  if (process.env.RENDER_URL) {
+    await bot.telegram.setWebhook(
+      `${process.env.RENDER_URL}/telegram-webhook`
+    )
+
+    console.log('Telegram webhook is set')
+  }
 })
 app.post('/notify-booking', async (req, res) => {
   console.log('==== NEW BOOKING REQUEST ====')
