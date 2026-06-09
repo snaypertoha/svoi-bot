@@ -53,3 +53,27 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Bot and API are running on port ${PORT}`)
 })
+app.post('/notify-booking', async (req, res) => {
+  console.log('==== NEW BOOKING REQUEST ====')
+  console.log(req.body)
+
+  try {
+    console.log('Sending message to admin...')
+
+    await bot.telegram.sendMessage(
+      process.env.ADMIN_CHAT_ID,
+      'Тестове повідомлення'
+    )
+
+    console.log('Message sent successfully')
+
+    res.json({ success: true })
+  } catch (error) {
+    console.error('SEND ERROR:', error)
+
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    })
+  }
+})
