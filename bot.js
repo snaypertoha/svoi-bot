@@ -46,6 +46,20 @@ app.post('/notify-booking', async (req, res) => {
   }
 })
 
+app.get('/test-admin', async (req, res) => {
+  try {
+    await bot.telegram.sendMessage(
+      process.env.ADMIN_CHAT_ID,
+      '✅ Тестове повідомлення від Render'
+    )
+
+    res.send('OK')
+  } catch (error) {
+    console.error(error)
+    res.status(500).send(error.message)
+  }
+})
+
 bot.launch()
 
 const PORT = process.env.PORT || 3001
